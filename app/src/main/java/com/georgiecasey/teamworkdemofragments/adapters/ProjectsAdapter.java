@@ -1,4 +1,4 @@
-package com.georgiecasey.teamworktest.adapters;
+package com.georgiecasey.teamworkdemofragments.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +16,6 @@ import java.util.List;
  */
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
-
     private List<Project> mProjects;
     private Context mContext;
     private PostItemListener mItemListener;

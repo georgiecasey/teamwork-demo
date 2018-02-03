@@ -1,4 +1,4 @@
-package com.georgiecasey.teamworktest.adapters;
+package com.georgiecasey.teamworkdemofragments.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -34,7 +34,7 @@ public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.View
     private PostItemListener mItemListener;
     private final OnStartDragListener mDragStartListener;
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, View.OnClickListener {
 
         public TextView titleTv;
         PostItemListener mItemListener;
@@ -47,16 +47,17 @@ public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.View
             handleView = (ImageView) itemView.findViewById(R.id.handle);
 
             this.mItemListener = postItemListener;
-            //itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
-        /*@Override
+        @Override
         public void onClick(View view) {
-            Project item = getItem(getAdapterPosition());
+            Tasklist item = getItem(getAdapterPosition());
             this.mItemListener.onPostClick(item.getId());
 
             notifyDataSetChanged();
-        }*/
+        }
+
         @Override
         public void onItemSelected() {
             itemView.setBackgroundColor(Color.LTGRAY);

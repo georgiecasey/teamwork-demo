@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,7 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnListItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,8 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);*/
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
             MainFragment fragment = new MainFragment();
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
+  /*  @Override
     public void onListItemClick(int position) {
         Fragment fragment = null;
         switch (position) {
@@ -121,5 +122,5 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.content, fragment)
                 .addToBackStack(null)
                 .commit();
-    }
+    }*/
 }
