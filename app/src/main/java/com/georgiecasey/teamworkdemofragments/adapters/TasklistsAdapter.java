@@ -29,9 +29,10 @@ import java.util.List;
 
 public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
-    private List<Tasklist> mTasklists=new ArrayList<>();;
+    public List<Tasklist> mTasklists=new ArrayList<>();;
     private Context mContext;
     private PostItemListener mItemListener;
+    private ItemMoveListener mItemMoveListener;
     private final OnStartDragListener mDragStartListener;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder, View.OnClickListener {
@@ -65,15 +66,18 @@ public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.View
 
         @Override
         public void onItemClear() {
+            // called when item actually moved, dropped so to say
             itemView.setBackgroundColor(0);
+            mItemMoveListener.onItemMove();
         }
     }
 
-    public TasklistsAdapter(Context context, List<Tasklist> posts, OnStartDragListener dragStartListener, PostItemListener itemListener) {
+    public TasklistsAdapter(Context context, List<Tasklist> posts, OnStartDragListener dragStartListener, PostItemListener itemListener, ItemMoveListener itemMoveListener) {
         mDragStartListener = dragStartListener;
         //mTasklists = posts;
         mContext = context;
         mItemListener = itemListener;
+        mItemMoveListener = itemMoveListener;
     }
 
     @Override
@@ -128,15 +132,6 @@ public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.View
     public void updateTasklists(List<Tasklist> items) {
         mTasklists = items;
         notifyDataSetChanged();
-        //notifyItemMoved(0, 2);
-        if(Looper.myLooper() == Looper.getMainLooper()) {
-            Log.d("GAVIN","main thread");
-            Log.d("GAVIN","count: "+getItemCount());
-            notifyItemRangeChanged(0,getItemCount());
-        } else {
-            Log.d("GAVIN","NOT main thread");
-        }
-
     }
 
     private Tasklist getItem(int adapterPosition) {
@@ -145,5 +140,9 @@ public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.View
 
     public interface PostItemListener {
         void onPostClick(long id);
+    }
+
+    public interface ItemMoveListener {
+        void onItemMove();
     }
 }

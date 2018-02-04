@@ -18,12 +18,17 @@ import com.georgiecasey.teamworkdemofragments.adapters.helpers.OnStartDragListen
 import com.georgiecasey.teamworkdemofragments.adapters.helpers.SimpleItemTouchHelperCallback;
 import com.georgiecasey.teamworkdemofragments.api.ApiUtil;
 import com.georgiecasey.teamworkdemofragments.api.TeamworkService;
+import com.georgiecasey.teamworkdemofragments.model.request.tasklists.ReorderTasklists;
+import com.georgiecasey.teamworkdemofragments.model.request.tasklists.TasklistId;
 import com.georgiecasey.teamworkdemofragments.model.response.tasklists.Tasklist;
 import com.georgiecasey.teamworkdemofragments.model.response.tasklists.Tasklists;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RecyclerListFragment extends Fragment implements OnStartDragListener {
     private ItemTouchHelper mItemTouchHelper;
@@ -66,11 +71,16 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mTasklistsAdapter = new TasklistsAdapter(getActivity(), new ArrayList<Tasklist>(0), this,new TasklistsAdapter.PostItemListener() {
+        mTasklistsAdapter = new TasklistsAdapter(getActivity(), new ArrayList<Tasklist>(0), this, new TasklistsAdapter.PostItemListener() {
 
             @Override
             public void onPostClick(long id) {
                 Toast.makeText(getActivity(), "Task id is" + id, Toast.LENGTH_SHORT).show();
+            }
+        }, new TasklistsAdapter.ItemMoveListener() {
+            @Override
+            public void onItemMove() {
+                reorderTasklists();
             }
         });
 
@@ -109,5 +119,26 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
 
             }
         });
+    }
+
+    public void reorderTasklists() {
+        ReorderTasklists reorderTasklists=new ReorderTasklists();
+
+        for (Tasklist item: mTasklistsAdapter.mTasklists) {
+            Log.d("GAVIN","TASKLIST:"+item.getName());
+            reorderTasklists.addTasklist(item.getId());
+        }
+        mService.reorderTasklists(project_id,reorderTasklists).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+        Log.d("FRAGMENT","onitemmove");
     }
 }
