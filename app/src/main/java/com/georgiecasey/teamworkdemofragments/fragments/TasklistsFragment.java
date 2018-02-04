@@ -1,4 +1,4 @@
-package com.georgiecasey.teamworkdemofragments;
+package com.georgiecasey.teamworkdemofragments.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,24 +18,22 @@ import com.georgiecasey.teamworkdemofragments.adapters.helpers.SimpleItemTouchHe
 import com.georgiecasey.teamworkdemofragments.api.ApiUtil;
 import com.georgiecasey.teamworkdemofragments.api.TeamworkService;
 import com.georgiecasey.teamworkdemofragments.model.request.tasklists.ReorderTasklists;
-import com.georgiecasey.teamworkdemofragments.model.request.tasklists.TasklistId;
 import com.georgiecasey.teamworkdemofragments.model.response.tasklists.Tasklist;
 import com.georgiecasey.teamworkdemofragments.model.response.tasklists.Tasklists;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecyclerListFragment extends Fragment implements OnStartDragListener {
+public class TasklistsFragment extends Fragment implements OnStartDragListener {
     private ItemTouchHelper mItemTouchHelper;
     private TasklistsAdapter mTasklistsAdapter;
     private TeamworkService mService;
     private long project_id;
 
-    public RecyclerListFragment() {
+    public TasklistsFragment() {
     }
 
     @Nullable
@@ -44,9 +41,6 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getArguments() != null) {
             project_id = getArguments().getLong("project_id");
-            Log.d("GAVIN","arguments not null"+project_id);
-        } else {
-            Log.d("GAVIN","arguments null");
         }
         mService = ApiUtil.getTeamworkService();
         loadTasklists();
@@ -103,42 +97,39 @@ public class RecyclerListFragment extends Fragment implements OnStartDragListene
         mService.getTasklists(project_id).enqueue(new retrofit2.Callback<Tasklists>() {
             @Override
             public void onResponse(retrofit2.Call<Tasklists> call, retrofit2.Response<Tasklists> response) {
-                if(response.isSuccessful()) {
-                    mTasklistsAdapter.updateTasklists(response.body().getTasklists());
-                }else {
-                    int statusCode  = response.code();
-                    Log.d("MainActivity", "status code");
-                    // handle request errors depending on status code
+                if (!response.isSuccessful()) {
+                    System.out.println("Retrofit failed, http code: " + response.code());
+                    return;
                 }
+                mTasklistsAdapter.updateTasklists(response.body().getTasklists());
             }
 
             @Override
             public void onFailure(Call<Tasklists> call, Throwable t) {
-                Log.e("MYAPP", "exception", t);
-                Log.d("MainActivity", "error loading from API");
-
+                System.out.println("Retrofit failed: " + t);
             }
         });
     }
 
     public void reorderTasklists() {
         ReorderTasklists reorderTasklists=new ReorderTasklists();
-
         for (Tasklist item: mTasklistsAdapter.mTasklists) {
-            Log.d("GAVIN","TASKLIST:"+item.getName());
             reorderTasklists.addTasklist(item.getId());
         }
+
         mService.reorderTasklists(project_id,reorderTasklists).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-
+                if (!response.isSuccessful()) {
+                    System.out.println("Retrofit failed, http code: " + response.code());
+                    return;
+                }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-
+                System.out.println("Retrofit failed: " + t);
             }
         });
-        Log.d("FRAGMENT","onitemmove");
     }
 }

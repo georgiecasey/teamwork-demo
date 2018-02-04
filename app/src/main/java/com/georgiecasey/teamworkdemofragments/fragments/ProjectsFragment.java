@@ -1,4 +1,4 @@
-package com.georgiecasey.teamworkdemofragments;
+package com.georgiecasey.teamworkdemofragments.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,11 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.georgiecasey.teamworkdemofragments.R;
 import com.georgiecasey.teamworkdemofragments.adapters.ProjectsAdapter;
 import com.georgiecasey.teamworkdemofragments.api.ApiUtil;
 import com.georgiecasey.teamworkdemofragments.api.TeamworkService;
@@ -21,11 +21,11 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 
-public class MainFragment extends Fragment {
+public class ProjectsFragment extends Fragment {
     private ProjectsAdapter mProjectsAdapter;
     private TeamworkService mService;
 
-    public MainFragment() {
+    public ProjectsFragment() {
     }
 
     @Nullable
@@ -51,26 +51,20 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        Log.d("GAVIN","setUserVisibleHint");
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mProjectsAdapter = new ProjectsAdapter(getActivity(), new ArrayList<Project>(0), new ProjectsAdapter.PostItemListener() {
             @Override
             public void onPostClick(long id) {
-                RecyclerListFragment fragment=new RecyclerListFragment();
+                TasklistsFragment fragment=new TasklistsFragment();
                 Bundle args = new Bundle();
                 args.putLong("project_id", id);
                 fragment.setArguments(args);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .add(R.id.content, fragment)
-                        .hide(MainFragment.this)
-                        .addToBackStack("tasklists")
+                        .hide(ProjectsFragment.this)
+                        .addToBackStack(null)
                         .commit();
             }
 
@@ -86,21 +80,16 @@ public class MainFragment extends Fragment {
         mService.getProjects().enqueue(new retrofit2.Callback<Projects>() {
             @Override
             public void onResponse(retrofit2.Call<Projects> call, retrofit2.Response<Projects> response) {
-                if(response.isSuccessful()) {
-                    Log.d("MainActivity", "asasasas");
-                    mProjectsAdapter.updateProjects(response.body().getProjects());
-                }else {
-                    int statusCode  = response.code();
-                    Log.d("MainActivity", "status code");
-                    // handle request errors depending on status code
+                if (!response.isSuccessful()) {
+                    System.out.println("Retrofit failed, http code: " + response.code());
+                    return;
                 }
+                mProjectsAdapter.updateProjects(response.body().getProjects());
             }
 
             @Override
             public void onFailure(Call<Projects> call, Throwable t) {
-                Log.e("MYAPP", "exception", t);
-                Log.d("MainActivity", "error loading from API");
-
+                System.out.println("Retrofit failed: " + t);
             }
         });
     }

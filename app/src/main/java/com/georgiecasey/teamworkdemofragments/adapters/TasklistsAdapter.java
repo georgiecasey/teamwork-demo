@@ -2,10 +2,8 @@ package com.georgiecasey.teamworkdemofragments.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Looper;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,7 +42,6 @@ public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.View
         public ViewHolder(View itemView, PostItemListener postItemListener) {
             super(itemView);
             titleTv = (TextView) itemView.findViewById(R.id.text);
-            titleTv.setText("Loading...");
             handleView = (ImageView) itemView.findViewById(R.id.handle);
 
             this.mItemListener = postItemListener;
@@ -74,7 +71,6 @@ public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.View
 
     public TasklistsAdapter(Context context, List<Tasklist> posts, OnStartDragListener dragStartListener, PostItemListener itemListener, ItemMoveListener itemMoveListener) {
         mDragStartListener = dragStartListener;
-        //mTasklists = posts;
         mContext = context;
         mItemListener = itemListener;
         mItemMoveListener = itemMoveListener;
@@ -82,14 +78,12 @@ public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.View
 
     @Override
     public TasklistsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View postView = inflater.inflate(R.layout.tasklist_row, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(postView, this.mItemListener);
-        Log.d("GAVIN","onCreateViewHolder");
         return viewHolder;
     }
 

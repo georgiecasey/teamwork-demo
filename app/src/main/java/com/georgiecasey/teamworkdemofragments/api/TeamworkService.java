@@ -1,11 +1,8 @@
 package com.georgiecasey.teamworkdemofragments.api;
 
 import com.georgiecasey.teamworkdemofragments.model.request.tasklists.ReorderTasklists;
-import com.georgiecasey.teamworkdemofragments.model.request.tasklists.TasklistId;
 import com.georgiecasey.teamworkdemofragments.model.response.project.Projects;
 import com.georgiecasey.teamworkdemofragments.model.response.tasklists.Tasklists;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
