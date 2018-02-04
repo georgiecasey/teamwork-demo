@@ -3,6 +3,7 @@ package com.georgiecasey.teamworkdemofragments.api;
 import com.georgiecasey.teamworkdemofragments.model.request.tasklists.ReorderTasklists;
 import com.georgiecasey.teamworkdemofragments.model.response.project.Projects;
 import com.georgiecasey.teamworkdemofragments.model.response.tasklists.Tasklists;
+import com.georgiecasey.teamworkdemofragments.model.response.user.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,8 +16,8 @@ import retrofit2.http.Path;
  */
 
 public interface TeamworkService {
-    /*@GET("authenticate.json")
-    Call<User> getAccount();*/
+    @GET("authenticate.json")
+    Call<User> getAccount();
 
     @GET("projects.json")
     Call<Projects> getProjects();

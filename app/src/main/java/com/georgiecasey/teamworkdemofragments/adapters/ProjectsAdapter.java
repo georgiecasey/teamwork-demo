@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.georgiecasey.teamworkdemofragments.R;
 import com.georgiecasey.teamworkdemofragments.model.response.project.Project;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
 
         public ViewHolder(View itemView, PostItemListener postItemListener) {
             super(itemView);
-            titleTv = (TextView) itemView.findViewById(android.R.id.text1);
+            titleTv = (TextView) itemView.findViewById(R.id.text);
 
             this.mItemListener = postItemListener;
             itemView.setOnClickListener(this);
@@ -54,7 +55,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View postView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+        View postView = inflater.inflate(R.layout.project_row, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(postView, this.mItemListener);
         return viewHolder;
