@@ -113,7 +113,7 @@ public class TasklistsFragment extends Fragment implements OnStartDragListener {
 
     public void reorderTasklists() {
         ReorderTasklists reorderTasklists=new ReorderTasklists();
-        for (Tasklist item: mTasklistsAdapter.mTasklists) {
+        for (Tasklist item: mTasklistsAdapter.getTasklists()) {
             reorderTasklists.addTasklist(item.getId());
         }
 

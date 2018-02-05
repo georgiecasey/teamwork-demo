@@ -27,7 +27,7 @@ import java.util.List;
 
 public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
-    public List<Tasklist> mTasklists=new ArrayList<>();;
+    private List<Tasklist> mTasklists=new ArrayList<>();;
     private Context mContext;
     private PostItemListener mItemListener;
     private ItemMoveListener mItemMoveListener;
@@ -121,6 +121,10 @@ public class TasklistsAdapter extends RecyclerView.Adapter<TasklistsAdapter.View
         Collections.swap(mTasklists, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
         return true;
+    }
+
+    public List<Tasklist> getTasklists() {
+        return mTasklists;
     }
 
     public void updateTasklists(List<Tasklist> items) {

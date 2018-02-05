@@ -27,17 +27,4 @@ public interface TeamworkService {
 
     @PUT("/projects/{projectId}/tasklists/reorder.json")
     Call<Void> reorderTasklists(@Path("projectId") long projectId, @Body ReorderTasklists tasklistIds);
-
-   /* @GET("projects/{projectId}.json")
-    Call<SingleProject> getSingleProject(@Path("projectId") long projectId);
-
-    @POST("pendingfiles.json")
-    Call<FileUpload> uploadFile(@Header("Content-Disposition") String content_disposition, @Body RequestBody file);
-
-    @Multipart
-    @POST("pendingfiles.json")
-    Call<FileUpload> uploadFile2(@Part MultipartBody.Part file);
-
-    @POST("/projects/{projectId}/files.json")
-    Call<AddFileToProjectResponse> addFileToProject(@Path("projectId") long projectId, @Body AddFileToProjectRequest addFileToProjectRequest);*/
 }
